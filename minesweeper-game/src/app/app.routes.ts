@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { GameComponent } from './game/game.component';
-import { GameSettingsComponent } from './game-settings/game-settings.component';
 
 export const routes: Routes = [
-  { path: 'start', component: AppComponent},
-  { path: 'game', component: GameComponent},
-  { path: 'settings', component: GameSettingsComponent},
-  { path: '', redirectTo: '/start', pathMatch: 'full' },
+  {
+    path: 'home-options',
+    loadComponent: () => import('./game-options/game-options.component').then(c => c. GameOptionsComponent)
+  },
+  {
+    path: 'play',
+    loadComponent: () => import('./game/game.component').then(c => c. GameComponent)
+  },
+  {
+    path: 'game-settings',
+    loadComponent: () => import('./game-settings/game-settings.component').then(c => c. GameSettingsComponent)
+  },
 ];
