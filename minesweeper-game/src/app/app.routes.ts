@@ -8,9 +8,5 @@ export const routes: Routes = [
   {
     path: 'play',
     loadComponent: () => import('./game/game.component').then(c => c. GameComponent)
-  },
-  {
-    path: 'game-settings',
-    loadComponent: () => import('./game-settings/game-settings.component').then(c => c. GameSettingsComponent)
-  },
+  }
 ];
