@@ -1,4 +1,4 @@
-<div class="background-theme">
+<div class="background-theme" [ngClass]="{'hide-element': hideOptions}">
   <div class="option" (click)="startGame()">Play</div>
   <div class="option" (click)="goToSettings()">Settings</div>
 </div>
