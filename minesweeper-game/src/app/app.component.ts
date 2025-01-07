@@ -10,4 +10,14 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'minesweeper-game';
+
+  constructor(){}
+
+  public startGame(){
+
+  }
+
+  public goToSettings(){
+
+  }
 }
