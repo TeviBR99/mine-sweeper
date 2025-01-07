@@ -5,4 +5,8 @@ html, body{
   height: 100%;
   margin: 0;
   background: $background-body;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
