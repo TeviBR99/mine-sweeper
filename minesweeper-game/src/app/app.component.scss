@@ -1,8 +1,12 @@
 .background-theme{
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 100px;
-  position: relative;
-  top: 200px;
+  gap: 10vh;
+  top: 50%;
   align-items: center;
+  width: 65vh;
+  padding: 35px;
+  background-color: grey;
+  border-radius: 5%;
 }
