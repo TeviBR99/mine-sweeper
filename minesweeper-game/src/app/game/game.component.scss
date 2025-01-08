@@ -1,7 +1,9 @@
 .game-board{
-
-  .cell{
-
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .rows{
+    display: flex;
   }
 
 }

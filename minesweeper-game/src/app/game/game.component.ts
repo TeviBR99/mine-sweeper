@@ -15,22 +15,36 @@ export class GameComponent {
 
   public boardSize: number = 10;
   public minesNumber: number = 2;
+  public board: any[] = []
 
   @Input() set parameters(parameters: GameParameters){
     this.updateGameParameters(parameters)
   }
 
-  constructor(private gameService: GameService) {}
+  constructor() {}
 
   public updateGameParameters(parameters: GameParameters){
-    console.log("parameters: ", parameters)
     if(parameters){
       const {minesNumber, boardSize} = parameters
       this.boardSize = boardSize
       this.minesNumber = minesNumber
+      this.buildBoard()
     }
-
   }
 
+  public buildBoard(){
+    let row : any[] = []
+    const MAX_FILAS = 3
+    const MAX_COLUMNS = 10;
+    for(let i=0; i<MAX_FILAS; i++){
+      row = []
+      for(let j=0; j<MAX_COLUMNS; j++){
+        row.push(0)
+      }
+      this.board.push(row)
+    }
+    console.log("Rows: ", row)
+    console.log("Board: ", this.board)
+  }
 
 }
