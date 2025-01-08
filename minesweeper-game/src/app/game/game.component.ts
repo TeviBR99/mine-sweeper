@@ -13,6 +13,9 @@ import { GameParameters } from '../model/game-parameters.model';
 })
 export class GameComponent {
 
+  public boardSize: number = 10;
+  public minesNumber: number = 2;
+
   @Input() set parameters(parameters: GameParameters){
     this.updateGameParameters(parameters)
   }
@@ -21,6 +24,12 @@ export class GameComponent {
 
   public updateGameParameters(parameters: GameParameters){
     console.log("parameters: ", parameters)
+    if(parameters){
+      const {minesNumber, boardSize} = parameters
+      this.boardSize = boardSize
+      this.minesNumber = minesNumber
+    }
+
   }
 
 

@@ -4,6 +4,7 @@ import { GameService } from './services/game.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { GameComponent } from "./game/game.component";
+import { GameParameters } from './model/game-parameters.model';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,9 @@ export class AppComponent {
   title = 'minesweeper-game';
   public hideGameSettings: boolean = false
   public hideOptions: boolean = false
+
   @ViewChild('minesNumber') minesNumber: ElementRef | undefined;
+  public gameParameters: GameParameters = {} as GameParameters
 
   constructor(){}
 
@@ -27,6 +30,9 @@ export class AppComponent {
 
   public startGame(){
     const boardSize = 64
+    let minesNumber = this.minesNumber?.nativeElement.value
+    this.gameParameters = new GameParameters(minesNumber, boardSize)
+
     this.hideGameSettings = true
     this.hideOptions = this.hideGameSettings
   }
