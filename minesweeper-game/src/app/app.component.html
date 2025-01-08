@@ -1,3 +1,17 @@
-<app-game-options></app-game-options>
+<div class="background-theme" [ngClass]="{'hide-element': hideOptions}">
+  <div class="option" (click)="startGame()">Play</div>
+  <div class="option" (click)="goToSettings()">Settings</div>
+  <!-- Add more menu options here-->
+</div>
+
+<div class="background-theme" [ngClass]="{'hide-element': hideGameSettings}">
+  <div class="option">
+    <span>Mines: </span><input #minesNumber type="number" placeholder="Enter number" />
+  </div>
+  <div class="option" (click)="confirmSettings()">Confirm</div>
+  <div class="option" (click)="cancelSettings()">Cancel</div>
+</div>
+
+<app-game [startGame]="hideGameSettings && hideOptions"></app-game>
 <router-outlet></router-outlet>
 

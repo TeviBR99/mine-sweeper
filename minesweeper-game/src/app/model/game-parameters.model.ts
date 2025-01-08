@@ -1,5 +1,7 @@
 export class GameParameters{
-  constructor(public hasStarted: boolean = false,
-    public minesNumber: number
+  constructor(
+    public hasStarted: boolean = false,
+    public minesNumber: number,
+    public boardSize: number
   ){}
 }
