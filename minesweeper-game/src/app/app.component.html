@@ -12,6 +12,9 @@
   <div class="option" (click)="cancelSettings()">Cancel</div>
 </div>
 
-<app-game [startGame]="hideGameSettings && hideOptions"></app-game>
+@if(hideGameSettings && hideOptions){
+  <app-game ></app-game>
+}
+
 <router-outlet></router-outlet>
 

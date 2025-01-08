@@ -18,7 +18,7 @@ export class AppComponent {
   public hideOptions: boolean = false
   @ViewChild('minesNumber') minesNumber: ElementRef | undefined;
 
-  constructor(private gameService: GameService){}
+  constructor(){}
 
   ngOnInit(){
     this.hideGameSettings = true
