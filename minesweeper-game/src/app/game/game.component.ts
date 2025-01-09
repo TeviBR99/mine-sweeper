@@ -34,8 +34,6 @@ export class GameComponent {
 
   public buildBoard(){
     let row : any[] = []
-    const MAX_FILAS = 20
-    const MAX_COLUMNS = 20;
     for(let i=0; i<this.boardSize; i++){
       row = []
       for(let j=0; j<this.boardSize; j++){
@@ -47,7 +45,7 @@ export class GameComponent {
   }
 
   public addMines(){
-    console.log("This board: ", this.board)
+    // console.log("This board: ", this.board)
   }
 
   public openCell(row: any){

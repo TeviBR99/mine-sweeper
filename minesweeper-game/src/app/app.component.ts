@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { GameComponent } from "./game/game.component";
 import { GameParameters } from './model/game-parameters.model';
 import {MatSelectModule} from '@angular/material/select';
+import { Difficulty } from './model/difficulty.model';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent {
   title = 'minesweeper-game';
   public hideGameSettings: boolean = false
   public hideOptions: boolean = false
+  public difficultySelector: string = ""
 
   @ViewChild('minesNumber') minesNumber: ElementRef | undefined;
   public gameParameters: GameParameters = {} as GameParameters
@@ -30,10 +32,8 @@ export class AppComponent {
   }
 
   public startGame(){
-    const boardSize = 64
     let minesNumber = this.minesNumber?.nativeElement.value
-    this.gameParameters = new GameParameters(minesNumber, boardSize)
-
+    this.gameParameters = new GameParameters(minesNumber, this.setBoardSize())
     this.hideGameSettings = true
     this.hideOptions = this.hideGameSettings
   }
@@ -51,6 +51,26 @@ export class AppComponent {
   public cancelSettings(){
     this.hideGameSettings = true
     this.hideOptions = !this.hideGameSettings
+  }
+
+  public selectLevel(event: any){
+    this.difficultySelector = (event.value as string).toUpperCase()
+  }
+
+  private setBoardSize(){
+    let boardSize: number = 0
+    switch(this.difficultySelector){
+      case Difficulty.MEDIUM:
+        boardSize = 20
+        break;
+      case Difficulty.HARD:
+        boardSize = 30
+        break;
+      default:
+        boardSize = 10
+        break;
+    }
+    return boardSize;
   }
 
 }
