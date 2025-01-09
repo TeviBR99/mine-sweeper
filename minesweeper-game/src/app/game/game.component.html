@@ -1,5 +1,5 @@
 <div class="game-board">
-  @for(rows of board; track $index){
+  @for(rows of board?.rows; track $index){
     <div class="rows">
       @for(cell of rows; track $index){
         <div class="cell" (click)="openCell(cell)">{{cell}}</div>

@@ -1,5 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GameParameters } from '../model/game-parameters.model';
+import { UtilsService } from '../services/utils.service';
+import { Board } from '../model/board.model';
 
 
 @Component({
@@ -13,39 +15,24 @@ import { GameParameters } from '../model/game-parameters.model';
 export class GameComponent {
 
   public boardSize: number = 0;
-  public minesNumber: number = 20;
-  public board: any[] = []
+  public minesNumber: number = 0;
+  public board?: Board
 
   @Input() set parameters(parameters: GameParameters){
     this.updateGameParameters(parameters)
   }
 
-  constructor() {}
+  constructor(private utilsService: UtilsService) {}
 
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
       const {minesNumber, boardSize} = parameters
-      this.boardSize = boardSize
-      this.minesNumber = minesNumber
-      this.buildBoard()
+      this.board = new Board(minesNumber, boardSize)
+      console.log(this.board)
     }
   }
 
-  public buildBoard(){
-    let row : any[] = []
-    for(let i=0; i<this.boardSize; i++){
-      row = []
-      for(let j=0; j<this.boardSize; j++){
-        row.push(0)
-      }
-      this.board.push(row)
-    }
-    this.addMines()
-  }
 
-  public addMines(){
-    // console.log("This board: ", this.board)
-  }
 
   public openCell(row: any){
     console.log("Row: ", row)
