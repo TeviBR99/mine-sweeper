@@ -22,7 +22,7 @@ export class GameComponent {
     this.updateGameParameters(parameters)
   }
 
-  constructor(private utilsService: UtilsService) {}
+  constructor() {}
 
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
