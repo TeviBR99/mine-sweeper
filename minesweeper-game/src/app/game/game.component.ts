@@ -36,7 +36,7 @@ export class GameComponent {
   }
 
   public addMarker(){
-    console.log("check")
+    console.log("addMarker")
   }
 
 }

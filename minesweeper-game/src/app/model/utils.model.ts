@@ -7,3 +7,11 @@ export class Utils{
   }
 
 }
+
+export enum CellState{
+  OPENED = 0,
+  CLOSED = 1,
+  CLOSED_WITH_MARKER = 2,
+  OPENED_WITH_MINE = 3,
+  OPENED_WITHOUT_MINE = 4,
+}
