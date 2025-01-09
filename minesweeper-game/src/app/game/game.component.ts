@@ -25,7 +25,6 @@ export class GameComponent {
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
       const {minesNumber, boardSize} = parameters
-      console.log("parameters: ", parameters)
       this.boardSize = boardSize
       this.minesNumber = minesNumber
       this.buildBoard()
