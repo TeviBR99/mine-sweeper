@@ -2,7 +2,13 @@
   @for(rows of board?.rows; track $index){
     <div class="rows">
       @for(cell of rows; track $index){
-        <div class="cell" (click)="openCell(cell)">{{cell}}</div>
+        <div class="cell" (click)="openCell(cell)">
+          @if(cell){
+            M
+          }@else {
+            0
+          }
+        </div>
       }
     </div>
   }

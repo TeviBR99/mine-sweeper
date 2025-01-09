@@ -28,16 +28,11 @@ export class GameComponent {
     if(parameters){
       const {minesNumber, boardSize} = parameters
       this.board = new Board(minesNumber, boardSize)
-      console.log(this.board)
     }
   }
-
-
 
   public openCell(row: any){
     console.log("Row: ", row)
   }
-
-
 
 }
