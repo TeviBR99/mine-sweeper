@@ -9,12 +9,18 @@
     justify-content: space-between;
 
     .cell{
+      width: 20px;
+      height: 20px;
+
       &:hover{
         cursor: pointer;
       }
 
       .closed-cell{
         background-color: red;
+        // background-image: url('assets/images/test.jpg');
+        // background-size: cover;
+        // background-position: center;
       }
 
       .closed-cell-with-marker{
