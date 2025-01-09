@@ -9,9 +9,24 @@
     justify-content: space-between;
 
     .cell{
-
       &:hover{
         cursor: pointer;
+      }
+
+      .closed-cell{
+        background-color: red;
+      }
+
+      .closed-cell-with-marker{
+        background-color: blue;
+      }
+
+      .opened-cell-without-mine{
+        background-color: green;
+      }
+
+      .opened-cell-with-mine{
+        background-color: yellow;
       }
     }
   }

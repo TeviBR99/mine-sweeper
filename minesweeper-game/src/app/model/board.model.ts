@@ -1,4 +1,4 @@
-import { Utils } from "./utils.model"
+import { CellState, Utils } from "./utils.model"
 
 export class Board{
   public rows : any[] = []
@@ -17,7 +17,7 @@ export class Board{
     for(let i=0; i<this.boardSize; i++){
       cell = []
       for(let j=0; j<this.boardSize; j++){
-        cell.push(false)
+        cell.push(CellState.CLOSED_WITHOUT_MINE)
       }
       this.rows.push(cell)
     }
@@ -31,14 +31,14 @@ export class Board{
       const xYaxys = utilsModel.getRandomInt(0,this.boardSize-1)
       const yAxys = utilsModel.getRandomInt(0,this.boardSize-1)
       if(this.checkIfThereIsNoMine(xYaxys, yAxys)){
-        this.rows[xYaxys][yAxys] = true
+        this.rows[xYaxys][yAxys] = CellState.CLOSED_WITH_MINE
         mineSet++
       }
     }
   }
 
   private checkIfThereIsNoMine(xAxys: number, yAxys: number){
-    return this.rows[xAxys][yAxys] === false;
+    return this.rows[xAxys][yAxys] === CellState.CLOSED_WITHOUT_MINE;
   }
 
 }

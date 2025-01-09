@@ -1,13 +1,13 @@
 <div class="game-board">
-  @for(rows of board?.rows; track $index){
+  @for(rows of board?.rows; track $index; let rowIndex = $index){
     <div class="rows">
-      @for(cell of rows; track $index){
-        <div class="cell" (click)="openCell(cell)" (auxclick)="addMarker()">
-          @if(cell){
-            M
-          }@else {
-            0
-          }
+      @for(cell of rows; track $index; let cellIndex = $index){
+        <div class="cell" (click)="openCell(rowIndex, cellIndex)" (auxclick)="addMarker(rowIndex, cellIndex)">
+          <span [ngClass]="{'closed-cell': cell === CellState.CLOSED_WITHOUT_MINE || CellState.CLOSED_WITH_MINE,
+            'closed-cell-with-marker': cell === CellState.CLOSED_WITH_MARKER, 'opened-cell-without-mine': cell === CellState.OPENED_WITHOUT_MINE,
+            'opened-cell-with-mine': cell === CellState.OPENED_WITH_MINE}">
+            {{cell}}
+          </span>
         </div>
       }
     </div>
