@@ -1,6 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { GameParameters } from '../model/game-parameters.model';
-import { UtilsService } from '../services/utils.service';
 import { Board } from '../model/board.model';
 
 
@@ -8,7 +7,6 @@ import { Board } from '../model/board.model';
   selector: 'app-game',
   standalone: true,
   imports: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
