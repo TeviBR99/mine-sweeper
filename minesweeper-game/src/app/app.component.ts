@@ -5,11 +5,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { GameComponent } from "./game/game.component";
 import { GameParameters } from './model/game-parameters.model';
+import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, GameComponent],
+  imports: [RouterOutlet, CommonModule, GameComponent, MatSelectModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

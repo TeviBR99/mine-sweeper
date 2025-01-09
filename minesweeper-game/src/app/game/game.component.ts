@@ -12,8 +12,8 @@ import { GameParameters } from '../model/game-parameters.model';
 })
 export class GameComponent {
 
-  public boardSize: number = 10;
-  public minesNumber: number = 2;
+  public boardSize: number = 0;
+  public minesNumber: number = 20;
   public board: any[] = []
 
   @Input() set parameters(parameters: GameParameters){
@@ -25,6 +25,7 @@ export class GameComponent {
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
       const {minesNumber, boardSize} = parameters
+      console.log("parameters: ", parameters)
       this.boardSize = boardSize
       this.minesNumber = minesNumber
       this.buildBoard()
@@ -35,13 +36,24 @@ export class GameComponent {
     let row : any[] = []
     const MAX_FILAS = 20
     const MAX_COLUMNS = 20;
-    for(let i=0; i<MAX_FILAS; i++){
+    for(let i=0; i<this.boardSize; i++){
       row = []
-      for(let j=0; j<MAX_COLUMNS; j++){
+      for(let j=0; j<this.boardSize; j++){
         row.push(0)
       }
       this.board.push(row)
     }
+    this.addMines()
   }
+
+  public addMines(){
+    console.log("This board: ", this.board)
+  }
+
+  public openCell(row: any){
+    console.log("Row: ", row)
+  }
+
+
 
 }

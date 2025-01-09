@@ -1,8 +1,8 @@
 <div class="game-board">
   @for(rows of board; track $index){
     <div class="rows">
-      @for(row of rows; track $index){
-        <div class="cell">3</div>
+      @for(cell of rows; track $index){
+        <div class="cell" (click)="openCell(cell)">{{cell}}</div>
       }
     </div>
   }
