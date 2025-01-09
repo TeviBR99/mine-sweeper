@@ -1,5 +1,4 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { GameService } from '../services/game.service';
 import { GameParameters } from '../model/game-parameters.model';
 
 
@@ -34,8 +33,8 @@ export class GameComponent {
 
   public buildBoard(){
     let row : any[] = []
-    const MAX_FILAS = 3
-    const MAX_COLUMNS = 10;
+    const MAX_FILAS = 20
+    const MAX_COLUMNS = 20;
     for(let i=0; i<MAX_FILAS; i++){
       row = []
       for(let j=0; j<MAX_COLUMNS; j++){
@@ -43,8 +42,6 @@ export class GameComponent {
       }
       this.board.push(row)
     }
-    console.log("Rows: ", row)
-    console.log("Board: ", this.board)
   }
 
 }

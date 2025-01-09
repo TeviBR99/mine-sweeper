@@ -1,9 +1,15 @@
 .game-board{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  background: grey;
+  width: 30vw;
+
   .rows{
     display: flex;
-  }
+    justify-content: space-between;
 
+    .cell{
+
+    }
+  }
 }
