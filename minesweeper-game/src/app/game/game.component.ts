@@ -35,4 +35,8 @@ export class GameComponent {
     console.log("Row: ", row)
   }
 
+  public addMarker(){
+    console.log("check")
+  }
+
 }
