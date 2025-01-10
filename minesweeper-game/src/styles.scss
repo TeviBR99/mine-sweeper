@@ -38,4 +38,12 @@ html, body{
   display: none;
 }
 
+.game-board{
+  background: $background-board;
+
+  & .opened-cell{
+    background: red;
+  }
+}
+
 

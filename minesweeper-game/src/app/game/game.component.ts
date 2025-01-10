@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { GameParameters } from '../model/game-parameters.model';
 import { Board } from '../model/board.model';
 import { CellState } from '../model/utils.model';
 import { CommonModule } from '@angular/common';
+import { GameService } from '../services/game.service';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 
 @Component({
@@ -23,17 +26,20 @@ export class GameComponent {
     this.updateGameParameters(parameters)
   }
 
-  constructor() {}
+  constructor(private gameService: GameService,
+    private router: Router) {}
+
 
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
-      const {minesNumber, boardSize} = parameters
-      this.board = new Board(minesNumber, boardSize)
+      this.board = new Board(parameters?.minesNumber, parameters?.boardSize)
     }
   }
 
   public openCell(rowIndex: number, cellIndex: number){
-
+    if(this.board){
+      this.board.rows[rowIndex][cellIndex].state = CellState.OPENED
+    }
   }
 
   public addMarker(rowIndex: number, cellIndex: number){

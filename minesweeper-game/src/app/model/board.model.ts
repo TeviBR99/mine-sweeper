@@ -1,8 +1,8 @@
-import { CellState, Utils } from "./utils.model"
+import { Cell } from "./cell.model"
+import { CellState, RandomIntUtils } from "./utils.model"
 
 export class Board{
   public rows : any[] = []
-  public mines: any[] = []
 
   constructor(
     public minesNumber: number,
@@ -12,12 +12,11 @@ export class Board{
   }
 
   private buildBoard(){
-    let cell : any[] = []
-    let rows: any[] = []
+    let cell : Cell[] = []
     for(let i=0; i<this.boardSize; i++){
       cell = []
       for(let j=0; j<this.boardSize; j++){
-        cell.push(CellState.CLOSED_WITHOUT_MINE)
+        cell.push(new Cell(CellState.CLOSED, false))
       }
       this.rows.push(cell)
     }
@@ -25,20 +24,27 @@ export class Board{
   }
 
   private setMines(){
-    let utilsModel : Utils = new Utils(0, this.boardSize-1)
+    const min = 0
+    const max = this.boardSize-1
+    let utilsModel : RandomIntUtils = new RandomIntUtils(min, max)
     let mineSet = 0;
+
     while(mineSet < this.minesNumber){
-      const xYaxys = utilsModel.getRandomInt(0,this.boardSize-1)
-      const yAxys = utilsModel.getRandomInt(0,this.boardSize-1)
+      const xYaxys = utilsModel.getRandomInt()
+      const yAxys = utilsModel.getRandomInt()
       if(this.checkIfThereIsNoMine(xYaxys, yAxys)){
-        this.rows[xYaxys][yAxys] = CellState.CLOSED_WITH_MINE
+        this.rows[xYaxys][yAxys].mine = true
         mineSet++
       }
     }
   }
 
   private checkIfThereIsNoMine(xAxys: number, yAxys: number){
-    return this.rows[xAxys][yAxys] === CellState.CLOSED_WITHOUT_MINE;
+    return !this.rows[xAxys][yAxys].mine;
+  }
+
+  private setNeighbourMines(){
+
   }
 
 }
