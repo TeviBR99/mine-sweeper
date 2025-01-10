@@ -37,13 +37,17 @@ export class GameComponent {
   }
 
   public openCell(rowIndex: number, cellIndex: number){
-    if(this.board){
-      this.board.rows[rowIndex][cellIndex].state = CellState.OPENED
-    }
+    this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
   }
 
   public addMarker(rowIndex: number, cellIndex: number){
+    this.changeCellState(rowIndex, cellIndex, CellState.CLOSED_WITH_MARKER)
+  }
 
+  private changeCellState(rowIndex: number, cellIndex: number, state: CellState){
+    if(this.board){
+      this.board.rows[rowIndex][cellIndex].state = state
+    }
   }
 
 }

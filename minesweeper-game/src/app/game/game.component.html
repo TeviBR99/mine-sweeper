@@ -3,11 +3,12 @@
     <div class="rows">
       @for(cell of rows; track $index; let cellIndex = $index){
         <div class="cell" (click)="openCell(rowIndex, cellIndex)" (auxclick)="addMarker(rowIndex, cellIndex)"
-            [ngClass]="{'closed-cell': cell.state === CellState.CLOSED_WITH_MARKER || cell.state === CellState.CLOSED , 'opened-cell': cell.state === CellState.OPENED }">
+            [ngClass]="{'closed-cell': cell.state === CellState.CLOSED_WITH_MARKER ||  cell.state === CellState.CLOSED, 'opened-cell': cell.state === CellState.OPENED }">
+
           @if(cell.state === CellState.CLOSED_WITH_MARKER){
-            <span class="closed-cell-marker"></span>
+            <span class="closed-cell-marker">F</span>
           }@else if(cell.state === CellState.OPENED) {
-            <span class="opened-cell"></span>
+            <span class="display-cell-content"></span>
           }
           <!-- <img src="assets/images/test.jpg"/> -->
         </div>
