@@ -89,6 +89,7 @@ export class Board{
     const yLeft = y-1
     const yRight = y+1
 
+    // const left
 
     this.open(x, y, true)
     this.open(x, y, false)
