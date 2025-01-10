@@ -2,18 +2,29 @@
   @for(rows of board?.rows; track $index; let rowIndex = $index){
     <div class="rows">
       @for(cell of rows; track $index; let cellIndex = $index){
-        <div class="cell" (click)="openCell(rowIndex, cellIndex)" (auxclick)="addMarker(rowIndex, cellIndex)"
-            [ngClass]="{'closed-cell': cell.state === CellState.CLOSED_WITH_MARKER ||  cell.state === CellState.CLOSED, 'opened-cell': cell.state === CellState.OPENED }">
+        @if(cell.state === CellState.CLOSED_WITH_MARKER ||  cell.state === CellState.CLOSED){
+          <div class="cell closed-cell" (click)="openCell(rowIndex, cellIndex)" (auxclick)="addMarker(rowIndex, cellIndex)" >
+              @switch (cell.state) {
+                @case(CellState.CLOSED_WITH_MARKER){
+                  <span class="closed-cell-marker">F</span>
+                }
+                @case(CellState.OPENED){
+                  @if(!cell.mine && cell.neighborMines > 0){
+                    <span class="display-cell-content">{{cell}}</span>
+                  }@else{
+                    <span class="display-cell-content">M</span>
+                  }
+                }
+              }
+          </div>
+        }@else {
+          <div class="cell opened-cell"></div>
+        }
 
-          @if(cell.state === CellState.CLOSED_WITH_MARKER){
-            <span class="closed-cell-marker">F</span>
-          }@else if(cell.state === CellState.OPENED) {
-            <span class="display-cell-content"></span>
-          }
-          <!-- <img src="assets/images/test.jpg"/> -->
-        </div>
       }
     </div>
   }
 </div>
+
+<!-- <img src="assets/images/test.jpg"/> -->
 
