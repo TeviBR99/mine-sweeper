@@ -4,23 +4,19 @@
       @for(cell of rows; track $index; let cellIndex = $index){
         @if(cell.state === CellState.CLOSED_WITH_MARKER ||  cell.state === CellState.CLOSED){
           <div class="cell closed-cell" (click)="openCell(rowIndex, cellIndex)" (auxclick)="addMarker(rowIndex, cellIndex)" >
-              @switch (cell.state) {
-                @case(CellState.CLOSED_WITH_MARKER){
-                  <span class="closed-cell-marker">F</span>
-                }
-                @case(CellState.OPENED){
-                  @if(!cell.mine && cell.neighborMines > 0){
-                    <span class="display-cell-content">{{cell}}</span>
-                  }@else{
-                    <span class="display-cell-content">M</span>
-                  }
-                }
-              }
+            @if(cell.state === CellState.CLOSED_WITH_MARKER){
+              <span class="closed-cell-marker">F</span>
+            }
           </div>
         }@else {
-          <div class="cell opened-cell"></div>
+          <div class="cell opened-cell">
+            @if(!cell.mine && cell.neighborMines > 0){
+              <span class="display-cell-content">{{cell.neighborMines}}</span>
+            }@else if(cell.mine) {
+              <span class="display-cell-content">M</span>
+            }
+          </div>
         }
-
       }
     </div>
   }

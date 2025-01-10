@@ -2,7 +2,8 @@ import { Cell } from "./cell.model"
 import { CellState, RandomIntUtils } from "./utils.model"
 
 export class Board{
-  public rows : any[] = []
+  // public rows : any[] = []
+  public rows : [Cell[]] = [[]]
 
   constructor(
     public minesNumber: number,
@@ -44,7 +45,7 @@ export class Board{
   }
 
   private setNeighbourMines(){
-
+    // this.rows[0][0].neighborMines = 2
   }
 
 }
