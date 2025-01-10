@@ -77,4 +77,14 @@ export class Board{
     return mine
   }
 
+  public openCells(rowIndex: number, cellIndex: number, state: CellState){
+
+  }
+
+  public changeCellState(rowIndex: number, cellIndex: number, state: CellState){
+    if(this.rows){
+      this.rows[rowIndex][cellIndex].state = state
+    }
+  }
+
 }

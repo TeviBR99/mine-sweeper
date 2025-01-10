@@ -40,17 +40,11 @@ export class GameComponent implements OnInit{
   }
 
   public openCell(rowIndex: number, cellIndex: number){
-    this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
+    this.board?.changeCellState(rowIndex, cellIndex, CellState.OPENED)
   }
 
   public addMarker(rowIndex: number, cellIndex: number){
-    this.changeCellState(rowIndex, cellIndex, CellState.CLOSED_WITH_MARKER)
-  }
-
-  private changeCellState(rowIndex: number, cellIndex: number, state: CellState){
-    if(this.board){
-      this.board.rows[rowIndex][cellIndex].state = state
-    }
+    this.board?.changeCellState(rowIndex, cellIndex, CellState.CLOSED_WITH_MARKER)
   }
 
   public removeAuxClickEvent(){
