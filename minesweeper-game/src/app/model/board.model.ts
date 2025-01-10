@@ -86,21 +86,21 @@ export class Board{
   public openCells(x: number, y: number){
     const xTop = x-1
     const xBottom = x+1
-    const yLeft = y-1
-    const yRight = y+1
 
-    // const left
+    const isBorder = x === 0 || x=== this.boardSize
 
     this.open(x, y, true)
     this.open(x, y, false)
 
-    // this.open(x, y, true)
-    // this.open(x, y, false)
+    this.open(isBorder ? x : xBottom, y, true)
+    this.open(isBorder ? x : xBottom, y, false)
 
+    this.open(isBorder ? x : xTop, y, true)
+    this.open(isBorder ? x : xTop, y, false)
   }
 
   private open(rowIndex: number, cellIndex: number, rightCheck: boolean){
-    const cell = this.rows[rowIndex][cellIndex]
+    const cell : Cell = this.rows[rowIndex][cellIndex]
     if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.neighborMines > 0){
       if(!cell.mine ){
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
