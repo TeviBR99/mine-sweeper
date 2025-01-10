@@ -106,11 +106,14 @@ export class Board{
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
         return;
       }
+    }else{
+      if(!cell.mine){
+        this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
+        this.open(rowIndex, rightCheck ? cellIndex-1 : cellIndex+1, rightCheck)
+      }
     }
-    if(!cell.mine){
-      this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
-      this.open(rowIndex, rightCheck ? cellIndex-1 : cellIndex+1, rightCheck)
-    }
+
+
   }
 
 
