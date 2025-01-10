@@ -2,8 +2,7 @@ import { Cell } from "./cell.model"
 import { CellState, RandomIntUtils } from "./utils.model"
 
 export class Board{
-  // public rows : any[] = []
-  public rows : [Cell[]] = [[]]
+  public rows : any[] = []
 
   constructor(
     public minesNumber: number,
@@ -13,7 +12,7 @@ export class Board{
   }
 
   private buildBoard(){
-    let cell : Cell[] = []
+    let cell : Cell[]
     for(let i=0; i<this.boardSize; i++){
       cell = []
       for(let j=0; j<this.boardSize; j++){
@@ -31,21 +30,44 @@ export class Board{
     let mineSet = 0;
 
     while(mineSet < this.minesNumber){
-      const xYaxys = utilsModel.getRandomInt()
+      const xAxys = utilsModel.getRandomInt()
       const yAxys = utilsModel.getRandomInt()
-      if(this.checkIfThereIsNoMine(xYaxys, yAxys)){
-        this.rows[xYaxys][yAxys].mine = true
+      if(!this.isThereMine(xAxys, yAxys)){
+        this.rows[xAxys][yAxys].mine = true
         mineSet++
       }
     }
-  }
-
-  private checkIfThereIsNoMine(xAxys: number, yAxys: number){
-    return !this.rows[xAxys][yAxys].mine;
+    this.setNeighbourMines()
   }
 
   private setNeighbourMines(){
-    // this.rows[0][0].neighborMines = 2
+    for(let xAxys=0; xAxys<this.boardSize; xAxys++){
+      for(let yAxys=0; yAxys<this.boardSize; yAxys++){
+       this.rows[xAxys][yAxys].neighborMines = this.minesAround(xAxys, yAxys)
+      }
+    }
+
+  }
+
+  private minesAround(x: number, y: number){
+    let mines : number = 0;
+    const xTop = x === 0 ? x : x-1
+    const xBottom = x === this.boardSize-1 ? x : x+1
+    const yLeft = y === 0 ? y : y-1
+    const yRight = y === this.boardSize-1 ? y : y+1
+
+    mines += this.isThereMine(x, yLeft) ? 1 : 0;
+    mines += this.isThereMine(x, yRight) ? 1 : 0;
+    mines += this.isThereMine(xTop, yLeft) ? 1 : 0;
+    mines += this.isThereMine(xTop, yRight) ? 1 : 0;
+    mines += this.isThereMine(xBottom, yLeft) ? 1 : 0;
+    mines += this.isThereMine(xBottom, yRight) ? 1 : 0;
+
+    return mines;
+  }
+
+  private isThereMine(xAxys: number, yAxys: number){
+    return this.rows[xAxys][yAxys].mine;
   }
 
 }
