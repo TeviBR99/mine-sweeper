@@ -46,7 +46,6 @@ export class Board{
        this.rows[xAxys][yAxys].neighborMines = this.minesAround(xAxys, yAxys)
       }
     }
-
   }
 
   private minesAround(x: number, y: number){
@@ -59,7 +58,6 @@ export class Board{
     mines += this.isThereMine(xTop, yLeft) ? 1 : 0;
     mines += this.isThereMine(xTop, y) ? 1 : 0;
     mines += this.isThereMine(xTop, yRight) ? 1 : 0;
-
 
     mines += this.isThereMine(x, yLeft) ? 1 : 0;
     mines += this.isThereMine(x, yRight) ? 1 : 0;

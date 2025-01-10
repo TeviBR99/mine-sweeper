@@ -15,7 +15,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
-export class GameComponent {
+export class GameComponent implements OnInit{
 
   public boardSize: number = 0;
   public minesNumber: number = 0;
@@ -29,6 +29,9 @@ export class GameComponent {
   constructor(private gameService: GameService,
     private router: Router) {}
 
+  ngOnInit(): void {
+    this.removeAuxClickEvent()
+  }
 
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
@@ -48,6 +51,13 @@ export class GameComponent {
     if(this.board){
       this.board.rows[rowIndex][cellIndex].state = state
     }
+  }
+
+  public removeAuxClickEvent(){
+    const gameBoardElement = document.body.querySelector(".game-board")
+    gameBoardElement?.addEventListener("contextmenu", (event) =>{
+      event.preventDefault()
+    }, true)
   }
 
 }
