@@ -77,14 +77,41 @@ export class Board{
     return mine
   }
 
-  public openCells(rowIndex: number, cellIndex: number, state: CellState){
-
-  }
-
   public changeCellState(rowIndex: number, cellIndex: number, state: CellState){
     if(this.rows){
       this.rows[rowIndex][cellIndex].state = state
     }
   }
+
+  public openCells(x: number, y: number){
+    const xTop = x-1
+    const xBottom = x+1
+    const yLeft = y-1
+    const yRight = y+1
+
+
+    this.open(x, y, true)
+    this.open(x, y, false)
+
+    // this.open(x, y, true)
+    // this.open(x, y, false)
+
+  }
+
+  private open(rowIndex: number, cellIndex: number, rightCheck: boolean){
+    const cell = this.rows[rowIndex][cellIndex]
+    if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.neighborMines > 0){
+      if(!cell.mine ){
+        this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
+        return;
+      }
+    }
+    if(!cell.mine){
+      this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
+      this.open(rowIndex, rightCheck ? cellIndex-1 : cellIndex+1, rightCheck)
+    }
+  }
+
+
 
 }
