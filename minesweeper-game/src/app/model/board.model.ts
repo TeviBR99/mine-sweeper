@@ -51,23 +51,32 @@ export class Board{
 
   private minesAround(x: number, y: number){
     let mines : number = 0;
-    const xTop = x === 0 ? x : x-1
-    const xBottom = x === this.boardSize-1 ? x : x+1
-    const yLeft = y === 0 ? y : y-1
-    const yRight = y === this.boardSize-1 ? y : y+1
+    const xTop = x-1
+    const xBottom = x+1
+    const yLeft = y-1
+    const yRight = y+1
+
+    mines += this.isThereMine(xTop, yLeft) ? 1 : 0;
+    mines += this.isThereMine(xTop, y) ? 1 : 0;
+    mines += this.isThereMine(xTop, yRight) ? 1 : 0;
+
 
     mines += this.isThereMine(x, yLeft) ? 1 : 0;
     mines += this.isThereMine(x, yRight) ? 1 : 0;
-    mines += this.isThereMine(xTop, yLeft) ? 1 : 0;
-    mines += this.isThereMine(xTop, yRight) ? 1 : 0;
+
     mines += this.isThereMine(xBottom, yLeft) ? 1 : 0;
+    mines += this.isThereMine(xBottom, y) ? 1 : 0;
     mines += this.isThereMine(xBottom, yRight) ? 1 : 0;
 
     return mines;
   }
 
   private isThereMine(xAxys: number, yAxys: number){
-    return this.rows[xAxys][yAxys].mine;
+    let mine = false;
+    if(xAxys >= 0 && xAxys < this.boardSize && yAxys >= 0 && yAxys < this.boardSize){
+      mine = this.rows[xAxys][yAxys].mine;
+    }
+    return mine
   }
 
 }
