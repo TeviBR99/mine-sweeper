@@ -91,31 +91,37 @@ export class Board{
 
   public openCells(x: number, y: number){
     const isBorder = x === 0 || x === this.boardSize-1
-    let bombOpened : boolean = false
-    console.log("Coordinates: ", x, ",", y)
 
     for(let i=x; i>=0; i--){
       this.open(isBorder ? x : i, y, true)
       this.open(isBorder ? x : i, y, false)
+      if(this.numberIsOpened){
+        break;
+      }
     }
 
+    this.numberIsOpened = false;
     for(let i=x; i<this.boardSize; i++){
       this.open(isBorder ? x : i, y, true)
       this.open(isBorder ? x : i, y, false)
+      if(this.numberIsOpened){
+        break;
+      }
     }
   }
 
   private open(rowIndex: number, cellIndex: number, leftCheck: boolean){
     const cell : Cell = this.rows[rowIndex][cellIndex]
-    if(cellIndex === 0 || cellIndex === this.boardSize-1){
+    if(!this.bombOpened){
+      if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.mine === true || cell.neighborMines >= 1){
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
-        this.bombOpened = cell.neighborMines === -1
-        this.numberIsOpened = cell.neighborMines > 0
-    }else{
-        this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
-        this.bombOpened = cell.neighborMines === -1
-        this.numberIsOpened = cell.neighborMines > 0
-        this.open(rowIndex, leftCheck ? cellIndex-1 : cellIndex+1, leftCheck)
+        this.bombOpened = cell.mine
+        this.numberIsOpened = cell.neighborMines >= 1
+        return;
+      }else{
+          this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
+          this.open(rowIndex, leftCheck ? cellIndex-1 : cellIndex+1, leftCheck)
+      }
     }
   }
 

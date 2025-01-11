@@ -42,7 +42,6 @@ export class GameComponent implements OnInit{
 
   public openCell(rowIndex: number, cellIndex: number){
     this.board?.openCells(rowIndex, cellIndex)
-    this.board?.changeCellState(rowIndex, cellIndex, CellState.OPENED)
   }
 
   public addMarker(rowIndex: number, cellIndex: number){
