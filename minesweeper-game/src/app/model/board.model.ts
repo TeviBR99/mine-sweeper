@@ -84,22 +84,20 @@ export class Board{
   }
 
   public openCells(x: number, y: number){
-    const xTop = x-1
-    const xBottom = x+1
+    const isBorder = x === 0 || x === this.boardSize-1
 
-    const isBorder = x === 0 || x=== this.boardSize
+    for(let i=x; i>=0; i--){
+      this.open(isBorder ? x : i, y, true)
+      this.open(isBorder ? x : i, y, false)
+    }
 
-    this.open(x, y, true)
-    this.open(x, y, false)
-
-    this.open(isBorder ? x : xBottom, y, true)
-    this.open(isBorder ? x : xBottom, y, false)
-
-    this.open(isBorder ? x : xTop, y, true)
-    this.open(isBorder ? x : xTop, y, false)
+    for(let i=x; i<this.boardSize; i++){
+      this.open(isBorder ? x : i, y, true)
+      this.open(isBorder ? x : i, y, false)
+    }
   }
 
-  private open(rowIndex: number, cellIndex: number, rightCheck: boolean){
+  private open(rowIndex: number, cellIndex: number, leftCheck: boolean){
     const cell : Cell = this.rows[rowIndex][cellIndex]
     if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.neighborMines > 0){
       if(!cell.mine ){
@@ -109,13 +107,8 @@ export class Board{
     }else{
       if(!cell.mine){
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
-        this.open(rowIndex, rightCheck ? cellIndex-1 : cellIndex+1, rightCheck)
+        this.open(rowIndex, leftCheck ? cellIndex-1 : cellIndex+1, leftCheck)
       }
     }
-
-
   }
-
-
-
 }
