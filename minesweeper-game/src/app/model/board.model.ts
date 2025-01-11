@@ -3,6 +3,8 @@ import { CellState, RandomIntUtils } from "./utils.model"
 
 export class Board{
   public rows : any[] = []
+  public bombOpened: boolean = false
+  public numberIsOpened: boolean = false
 
   constructor(
     public minesNumber: number,
@@ -89,47 +91,32 @@ export class Board{
 
   public openCells(x: number, y: number){
     const isBorder = x === 0 || x === this.boardSize-1
-    let skip : boolean = false
+    let bombOpened : boolean = false
     console.log("Coordinates: ", x, ",", y)
 
-    //Upper rows
     for(let i=x; i>=0; i--){
-      skip = this.open(isBorder ? x : i, y, true)
-      skip = this.open(isBorder ? x : i, y, false)
-      if(skip){
-        console.log("Upper rows: ", i)
-        break;
-      }
+      this.open(isBorder ? x : i, y, true)
+      this.open(isBorder ? x : i, y, false)
     }
 
-    //Lower rows
     for(let i=x; i<this.boardSize; i++){
-      skip = this.open(isBorder ? x : i, y, true)
-      skip = this.open(isBorder ? x : i, y, false)
-
-      if(skip){
-        console.log("Lower rows: ", i)
-        break;
-      }
+      this.open(isBorder ? x : i, y, true)
+      this.open(isBorder ? x : i, y, false)
     }
   }
 
   private open(rowIndex: number, cellIndex: number, leftCheck: boolean){
-    let stopped: boolean = false
     const cell : Cell = this.rows[rowIndex][cellIndex]
-    // console.log("cell: ", cell)
-    if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.neighborMines >= 0){
-      if(!cell.mine){
+    if(cellIndex === 0 || cellIndex === this.boardSize-1){
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
-        stopped = cell.neighborMines >= 0
-      }
+        this.bombOpened = cell.neighborMines === -1
+        this.numberIsOpened = cell.neighborMines > 0
     }else{
-      if(!cell.mine){
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
+        this.bombOpened = cell.neighborMines === -1
+        this.numberIsOpened = cell.neighborMines > 0
         this.open(rowIndex, leftCheck ? cellIndex-1 : cellIndex+1, leftCheck)
-      }
     }
-    return stopped;
   }
 
 }
