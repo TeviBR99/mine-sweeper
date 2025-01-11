@@ -95,28 +95,21 @@ export class Board{
     for(let i=x; i>=0; i--){
       this.open(isBorder ? x : i, y, true)
       this.open(isBorder ? x : i, y, false)
-      if(this.numberIsOpened){
-        break;
-      }
     }
 
-    this.numberIsOpened = false;
     for(let i=x; i<this.boardSize; i++){
       this.open(isBorder ? x : i, y, true)
       this.open(isBorder ? x : i, y, false)
-      if(this.numberIsOpened){
-        break;
-      }
     }
   }
 
   private open(rowIndex: number, cellIndex: number, leftCheck: boolean){
     const cell : Cell = this.rows[rowIndex][cellIndex]
     if(!this.bombOpened){
-      if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.mine === true || cell.neighborMines >= 1){
+      if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.neighborMines != 0){
+
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
         this.bombOpened = cell.mine
-        this.numberIsOpened = cell.neighborMines >= 1
         return;
       }else{
           this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
