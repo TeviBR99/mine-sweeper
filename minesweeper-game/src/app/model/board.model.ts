@@ -6,6 +6,16 @@ export class Board{
   public bombOpened: boolean = false
   public numberIsOpened: boolean = false
 
+  private inLimits = (x: number, y: number) => {return x >= 0 && x < this.boardSize && y >= 0 && y < this.boardSize}
+
+  private noMineNorNumberOpened = (x: number, y: number) => {
+    let check = false
+    if(this.inLimits(x,y)){
+      check = this.rows[x][y].neighborMines !== -1 && this.rows[x][y].neighborMines === 0
+    }
+    return check
+  }
+
   constructor(
     public minesNumber: number,
     public boardSize: number
@@ -84,22 +94,86 @@ export class Board{
   }
 
   public changeCellState(rowIndex: number, cellIndex: number, state: CellState){
-    if(this.rows){
+    if(this.rows && this.inLimits(rowIndex, cellIndex)){
       this.rows[rowIndex][cellIndex].state = state
     }
   }
 
   public openCells(x: number, y: number){
-    const isBorder = x === 0 || x === this.boardSize-1
-
-    for(let i=x; i>=0; i--){
-      this.open(isBorder ? x : i, y, true)
-      this.open(isBorder ? x : i, y, false)
+    //Upper rows
+    for(let i=x; i<this.boardSize; i++){
+      for(let j=y; j<this.boardSize; j++){
+        this.openNeighboringCells(i,j)
+      }
+      for(let j=y; j>=0; j--){
+        this.openNeighboringCells(i,j)
+      }
     }
 
-    for(let i=x; i<this.boardSize; i++){
-      this.open(isBorder ? x : i, y, true)
-      this.open(isBorder ? x : i, y, false)
+    //Lower rows
+    for(let i=x; i>=0; i--){
+      for(let j=y; j<this.boardSize; j++){
+        this.openNeighboringCells(i,j)
+      }
+      for(let j=y; j>=0; j--){
+        this.openNeighboringCells(i,j)
+      }
+    }
+  }
+
+
+  private openNeighboringCells(x: number, y: number){
+
+    this.changeCellState(x, y, CellState.OPENED)
+
+    const xTop = x+1
+    const xBottom = x-1
+    const yLeft = y-1
+    const yRight = y+1
+
+    if(this.noMineNorNumberOpened(xTop,y)){
+      this.changeCellState(xTop, y, CellState.OPENED)
+    }
+
+    if(this.noMineNorNumberOpened(xTop, yLeft)){
+      this.changeCellState(xBottom, yLeft, CellState.OPENED)
+    }
+
+    if(this.noMineNorNumberOpened(xTop, yRight)){
+      this.changeCellState(xBottom, yRight, CellState.OPENED)
+    }
+
+    if(this.noMineNorNumberOpened(xBottom,y)){
+      this.changeCellState(xBottom, y, CellState.OPENED)
+    }
+
+    if(this.noMineNorNumberOpened(xBottom, yLeft)){
+      this.changeCellState(xBottom, yLeft, CellState.OPENED)
+    }
+
+    if(this.noMineNorNumberOpened(xBottom, yRight)){
+      this.changeCellState(xBottom, yRight, CellState.OPENED)
+    }
+  }
+
+
+  private openNoRecursive(rowIndex: number, cellIndex: number, leftCheck: boolean){
+    if(leftCheck){
+      for(let j=cellIndex; j>=0; j--){
+        const cell : Cell = this.rows[rowIndex][j]
+        this.changeCellState(rowIndex, j, CellState.OPENED)
+        if(cell.mine || cell.neighborMines > 0){
+          break;
+        }
+      }
+    }else{
+      for(let j=cellIndex; j<this.boardSize; j++){
+        const cell : Cell = this.rows[rowIndex][j]
+        this.changeCellState(rowIndex, j, CellState.OPENED)
+        if(cell.mine || cell.neighborMines > 0){
+          break;
+        }
+      }
     }
   }
 
@@ -107,10 +181,12 @@ export class Board{
     const cell : Cell = this.rows[rowIndex][cellIndex]
     if(!this.bombOpened){
       if(cellIndex === 0 || cellIndex === this.boardSize-1 || cell.neighborMines != 0){
-
+        this.bombOpened = cell.neighborMines === -1
+        this.numberIsOpened = cell.neighborMines > 0
         this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
-        this.bombOpened = cell.mine
+
         return;
+
       }else{
           this.changeCellState(rowIndex, cellIndex, CellState.OPENED)
           this.open(rowIndex, leftCheck ? cellIndex-1 : cellIndex+1, leftCheck)
