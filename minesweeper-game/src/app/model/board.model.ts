@@ -92,7 +92,7 @@ export class Board{
     }
   }
 
-  public openCells(x: number, y: number, cellsCount: number = 0){
+  public openCells(x: number, y: number, cellsCount: number = 0, rowsChecked?: any[]){
 
     if(this.inLimits(x, y)){
       if(this.rows[x][y].neighborMines === 0){
