@@ -92,8 +92,8 @@ export class Board{
     }
   }
 
-  public openCells(x: number, y: number, cellsCount: number = 0, rowsChecked?: any[]){
-
+  public openCells(x: number, y: number){
+    //with this condition we just open the left side from our chosen cell
     if(this.inLimits(x, y)){
       if(this.rows[x][y].neighborMines === 0){
         this.changeCellState(x,y, CellState.OPENED)
