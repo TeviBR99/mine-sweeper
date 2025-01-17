@@ -5,6 +5,7 @@ export class Board{
   public rows : any[] = []
   public bombOpened: boolean = false
   public numberIsOpened: boolean = false
+  private openedCellsWithBombsNearby: {xPoint: number, yPoint: number}[] = []
 
   private inLimits = (x: number, y: number) => {return x >= 0 && x < this.boardSize && y >= 0 && y < this.boardSize}
 
@@ -161,9 +162,40 @@ export class Board{
         }
       }
     }else{
-      //Middle of the board
+      this.openedCellsWithBombsNearby = []
+      for(let i=0; i<this.boardSize; i++){
+        for(let j=0; j<this.boardSize; j++){
+          this.openingNeighbors(i, j)
+        }
+      }
     }
 
+  }
+
+  private openingNeighbors(x: number, y: number){
+    const xTop = x-1
+    const xBottom = x+1
+    const yLeft = y-1
+    const yRight = y+1
+
+    this.saveOpenedNumber(x, y)
+    this.saveOpenedNumber(x, yLeft)
+    this.saveOpenedNumber(x, yRight)
+
+    this.saveOpenedNumber(xTop, yLeft)
+    this.saveOpenedNumber(xTop, y)
+    this.saveOpenedNumber(xTop, yRight)
+
+    this.saveOpenedNumber(xBottom, yLeft)
+    this.saveOpenedNumber(xBottom, y)
+    this.saveOpenedNumber(xBottom, yRight)
+
+  }
+
+  private saveOpenedNumber(x: number, y: number){
+    // if(this.inLimits(x, y)){
+    //   this.changeCellState(x, y, CellState.OPENED)
+    // }
   }
 
 }
