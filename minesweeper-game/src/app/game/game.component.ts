@@ -36,7 +36,6 @@ export class GameComponent implements OnInit{
   public updateGameParameters(parameters: GameParameters){
     if(parameters){
       this.board = new Board(parameters?.minesNumber, parameters?.boardSize)
-      console.log(this.board)
     }
   }
 

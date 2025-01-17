@@ -93,13 +93,24 @@ export class Board{
   }
 
   public open(x: number, y: number){
+
     const top = x === 0 && y >= 0 && y < this.boardSize
-    const left = x >= 0 && x < this.boardSize && y === 0
-    const right = x >= 0 && x < this.boardSize && y === this.boardSize-1
+    const left = x > 0 && x < this.boardSize-1 && y === 0
+    const right = x > 0 && x < this.boardSize-1 && y === this.boardSize-1
     const bottom = x === this.boardSize-1 && y >= 0 && y < this.boardSize
 
-    if(top){
-      for(let i=y; i<this.boardSize; i++){
+    let indexToCheck = 0
+    if(top || bottom){
+      indexToCheck = y
+    }
+
+    if(left || right){
+      indexToCheck = x
+    }
+
+
+    for(let i=indexToCheck; i<this.boardSize; i++){
+      if(top || bottom){
         const neighborMines = this.rows[x][i].neighborMines
         if(neighborMines >= 0){
           this.changeCellState(x, i, CellState.OPENED)
@@ -110,9 +121,23 @@ export class Board{
           this.changeCellState(x, i, CellState.OPENED)
           break;
         }
+      }else if(left || right){
+        const neighborMines = this.rows[i][y].neighborMines
+        if(neighborMines >= 0){
+          this.changeCellState(i, y, CellState.OPENED)
+          if(neighborMines > 0){
+            break;
+          }
+        }else{
+          this.changeCellState(i, y, CellState.OPENED)
+          break;
+        }
       }
 
-      for(let i=y; i>=0; i--){
+    }
+
+    for(let i=indexToCheck; i>=0; i--){
+      if(top || bottom){
         const neighborMines = this.rows[x][i].neighborMines
         if(neighborMines >= 0){
           this.changeCellState(x, i, CellState.OPENED)
@@ -123,17 +148,23 @@ export class Board{
           this.changeCellState(x, i, CellState.OPENED)
           break;
         }
+      }else if(left || right){
+        const neighborMines = this.rows[i][y].neighborMines
+        if(neighborMines >= 0){
+          this.changeCellState(i, y, CellState.OPENED)
+          if(neighborMines > 0){
+            break;
+          }
+        }else{
+          this.changeCellState(i, y, CellState.OPENED)
+          break;
+        }
       }
-    }else if(left){
-
-    }else if(right){
-
-    }else if(bottom){
-
-    }else{
 
     }
   }
+
+
 
 
   private isMineOpen(x: number, y: number){
