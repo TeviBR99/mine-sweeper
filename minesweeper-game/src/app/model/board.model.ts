@@ -93,46 +93,50 @@ export class Board{
   }
 
   public open(x: number, y: number){
-    if(this.rows[x][y].neighborMines === 0){
+    const top = x === 0 && y >= 0 && y < this.boardSize
+    const left = x >= 0 && x < this.boardSize && y === 0
+    const right = x >= 0 && x < this.boardSize && y === this.boardSize-1
+    const bottom = x === this.boardSize-1 && y >= 0 && y < this.boardSize
 
-      for(let i=x; i<this.boardSize; i++){
-        this.openRows(i, y)
+    if(top){
+      for(let i=y; i<this.boardSize; i++){
+        const neighborMines = this.rows[x][i].neighborMines
+        if(neighborMines >= 0){
+          this.changeCellState(x, i, CellState.OPENED)
+          if(neighborMines > 0){
+            break;
+          }
+        }else{
+          this.changeCellState(x, i, CellState.OPENED)
+          break;
+        }
       }
 
-      for(let i=x; i>=0; i--){
-        this.openRows(i, y)
+      for(let i=y; i>=0; i--){
+        const neighborMines = this.rows[x][i].neighborMines
+        if(neighborMines >= 0){
+          this.changeCellState(x, i, CellState.OPENED)
+          if(neighborMines > 0){
+            break;
+          }
+        }else{
+          this.changeCellState(x, i, CellState.OPENED)
+          break;
+        }
       }
+    }else if(left){
+
+    }else if(right){
+
+    }else if(bottom){
 
     }else{
-      this.changeCellState(x, y, CellState.OPENED)
+
     }
   }
 
-  private openRows(row: number, cell: number){
-    for(let i=cell; i<this.boardSize; i++){
-      this.bombOpened = this.isMineOpen(row, i)
 
-      if(this.rows[row][i].neighborMines === 0){
-        this.changeCellState(row, i, CellState.OPENED)
-      }else{
-        this.changeCellState(row, i, CellState.OPENED)
-        break;
-      }
-    }
-
-    for(let i=cell; i>=0; i--){
-      this.bombOpened = this.isMineOpen(row, i)
-
-      if(this.rows[row][i].neighborMines === 0){
-        this.changeCellState(row, i, CellState.OPENED)
-      }else{
-        this.changeCellState(row, i, CellState.OPENED)
-        break;
-      }
-    }
-  }
-
-  public isMineOpen(x: number, y: number){
+  private isMineOpen(x: number, y: number){
     return this.rows[x][y].mine
   }
 }
