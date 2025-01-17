@@ -133,7 +133,6 @@ export class Board{
             break;
           }
         }
-
       }
 
       for(let i=indexToCheck; i>=0; i--){
@@ -160,10 +159,9 @@ export class Board{
             break;
           }
         }
-
       }
     }else{
-
+      //Middle of the board
     }
 
   }
