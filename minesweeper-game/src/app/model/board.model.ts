@@ -108,66 +108,64 @@ export class Board{
       indexToCheck = x
     }
 
+    if(top || bottom || left || right){
+      for(let i=indexToCheck; i<this.boardSize; i++){
+        if(top || bottom){
+          const neighborMines = this.rows[x][i].neighborMines
+          if(neighborMines >= 0){
+            this.changeCellState(x, i, CellState.OPENED)
+            if(neighborMines > 0){
+              break;
+            }
+          }else{
+            this.changeCellState(x, i, CellState.OPENED)
+            break;
+          }
+        }else if(left || right){
+          const neighborMines = this.rows[i][y].neighborMines
+          if(neighborMines >= 0){
+            this.changeCellState(i, y, CellState.OPENED)
+            if(neighborMines > 0){
+              break;
+            }
+          }else{
+            this.changeCellState(i, y, CellState.OPENED)
+            break;
+          }
+        }
 
-    for(let i=indexToCheck; i<this.boardSize; i++){
-      if(top || bottom){
-        const neighborMines = this.rows[x][i].neighborMines
-        if(neighborMines >= 0){
-          this.changeCellState(x, i, CellState.OPENED)
-          if(neighborMines > 0){
-            break;
-          }
-        }else{
-          this.changeCellState(x, i, CellState.OPENED)
-          break;
-        }
-      }else if(left || right){
-        const neighborMines = this.rows[i][y].neighborMines
-        if(neighborMines >= 0){
-          this.changeCellState(i, y, CellState.OPENED)
-          if(neighborMines > 0){
-            break;
-          }
-        }else{
-          this.changeCellState(i, y, CellState.OPENED)
-          break;
-        }
       }
+
+      for(let i=indexToCheck; i>=0; i--){
+        if(top || bottom){
+          const neighborMines = this.rows[x][i].neighborMines
+          if(neighborMines >= 0){
+            this.changeCellState(x, i, CellState.OPENED)
+            if(neighborMines > 0){
+              break;
+            }
+          }else{
+            this.changeCellState(x, i, CellState.OPENED)
+            break;
+          }
+        }else if(left || right){
+          const neighborMines = this.rows[i][y].neighborMines
+          if(neighborMines >= 0){
+            this.changeCellState(i, y, CellState.OPENED)
+            if(neighborMines > 0){
+              break;
+            }
+          }else{
+            this.changeCellState(i, y, CellState.OPENED)
+            break;
+          }
+        }
+
+      }
+    }else{
 
     }
 
-    for(let i=indexToCheck; i>=0; i--){
-      if(top || bottom){
-        const neighborMines = this.rows[x][i].neighborMines
-        if(neighborMines >= 0){
-          this.changeCellState(x, i, CellState.OPENED)
-          if(neighborMines > 0){
-            break;
-          }
-        }else{
-          this.changeCellState(x, i, CellState.OPENED)
-          break;
-        }
-      }else if(left || right){
-        const neighborMines = this.rows[i][y].neighborMines
-        if(neighborMines >= 0){
-          this.changeCellState(i, y, CellState.OPENED)
-          if(neighborMines > 0){
-            break;
-          }
-        }else{
-          this.changeCellState(i, y, CellState.OPENED)
-          break;
-        }
-      }
-
-    }
   }
 
-
-
-
-  private isMineOpen(x: number, y: number){
-    return this.rows[x][y].mine
-  }
 }
