@@ -92,15 +92,47 @@ export class Board{
     }
   }
 
-  public openCells(x: number, y: number){
-    //with this condition we just open the left side from our chosen cell
-    if(this.inLimits(x, y)){
-      if(this.rows[x][y].neighborMines === 0){
-        this.changeCellState(x,y, CellState.OPENED)
-        this.openCells(x, y-1)
-      }else {
-        this.changeCellState(x, y, CellState.OPENED)
+  public open(x: number, y: number){
+    if(this.rows[x][y].neighborMines === 0){
+
+      for(let i=x; i<this.boardSize; i++){
+        this.openRows(i, y)
+      }
+
+      for(let i=x; i>=0; i--){
+        this.openRows(i, y)
+      }
+
+    }else{
+      this.changeCellState(x, y, CellState.OPENED)
+    }
+  }
+
+  private openRows(row: number, cell: number){
+    for(let i=cell; i<this.boardSize; i++){
+      this.bombOpened = this.isMineOpen(row, i)
+
+      if(this.rows[row][i].neighborMines === 0){
+        this.changeCellState(row, i, CellState.OPENED)
+      }else{
+        this.changeCellState(row, i, CellState.OPENED)
+        break;
       }
     }
+
+    for(let i=cell; i>=0; i--){
+      this.bombOpened = this.isMineOpen(row, i)
+
+      if(this.rows[row][i].neighborMines === 0){
+        this.changeCellState(row, i, CellState.OPENED)
+      }else{
+        this.changeCellState(row, i, CellState.OPENED)
+        break;
+      }
+    }
+  }
+
+  public isMineOpen(x: number, y: number){
+    return this.rows[x][y].mine
   }
 }
