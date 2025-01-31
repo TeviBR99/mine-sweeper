@@ -88,114 +88,44 @@ export class Board{
   }
 
   public changeCellState(rowIndex: number, cellIndex: number, state: CellState){
+    let check = false;
     if(this.rows && this.inLimits(rowIndex, cellIndex)){
       this.rows[rowIndex][cellIndex].state = state
+      check = true
     }
+    return check;
   }
 
   public open(x: number, y: number){
-
-    const top = x === 0 && y >= 0 && y < this.boardSize
-    const left = x > 0 && x < this.boardSize-1 && y === 0
-    const right = x > 0 && x < this.boardSize-1 && y === this.boardSize-1
-    const bottom = x === this.boardSize-1 && y >= 0 && y < this.boardSize
-
-    let indexToCheck = 0
-    if(top || bottom){
-      indexToCheck = y
-    }
-
-    if(left || right){
-      indexToCheck = x
-    }
-
-    if(top || bottom || left || right){
-      for(let i=indexToCheck; i<this.boardSize; i++){
-        if(top || bottom){
-          const neighborMines = this.rows[x][i].neighborMines
-          if(neighborMines >= 0){
-            this.changeCellState(x, i, CellState.OPENED)
-            if(neighborMines > 0){
-              break;
-            }
-          }else{
-            this.changeCellState(x, i, CellState.OPENED)
-            break;
-          }
-        }else if(left || right){
-          const neighborMines = this.rows[i][y].neighborMines
-          if(neighborMines >= 0){
-            this.changeCellState(i, y, CellState.OPENED)
-            if(neighborMines > 0){
-              break;
-            }
-          }else{
-            this.changeCellState(i, y, CellState.OPENED)
-            break;
-          }
+    let xAxys = x
+    let yAxys = y
+    let yAxysTowardsLeft = y-1
+    let openCell = true
+    let openedCells = 0;
+    let numberOpened = 0
+    do{
+      if(this.rows[xAxys][yAxys].mine || this.rows[xAxys][yAxysTowardsLeft].mine){
+        if(openedCells == 0){
+          this.changeCellState(xAxys, yAxys, CellState.OPENED)
         }
-      }
-
-      for(let i=indexToCheck; i>=0; i--){
-        if(top || bottom){
-          const neighborMines = this.rows[x][i].neighborMines
-          if(neighborMines >= 0){
-            this.changeCellState(x, i, CellState.OPENED)
-            if(neighborMines > 0){
-              break;
-            }
-          }else{
-            this.changeCellState(x, i, CellState.OPENED)
-            break;
+        openCell = false
+      }else{
+        if(openedCells == 0){
+          this.changeCellState(xAxys, yAxys, CellState.OPENED)
+          numberOpened += this.rows[xAxys][yAxys].neighborMines > 0 ? 1 : 0
+          if(numberOpened === 0){
+            this.changeCellState(xAxys, yAxysTowardsLeft, CellState.OPENED)
           }
-        }else if(left || right){
-          const neighborMines = this.rows[i][y].neighborMines
-          if(neighborMines >= 0){
-            this.changeCellState(i, y, CellState.OPENED)
-            if(neighborMines > 0){
-              break;
-            }
-          }else{
-            this.changeCellState(i, y, CellState.OPENED)
-            break;
-          }
+          openCell = false
+        }else if(openedCells >= 0 && numberOpened == 0){
+          this.changeCellState(xAxys, yAxys, CellState.OPENED)
+          numberOpened += this.rows[xAxys][yAxys].neighborMines > 0 ? 1 : 0
+          openCell = numberOpened === 0
         }
+        openedCells++
+        yAxys++
+        yAxysTowardsLeft--
       }
-    }else{
-      this.openedCellsWithBombsNearby = []
-      for(let i=0; i<this.boardSize; i++){
-        for(let j=0; j<this.boardSize; j++){
-          this.openingNeighbors(i, j)
-        }
-      }
-    }
-
+    }while(openCell && yAxys >= 0 && yAxys < this.boardSize && (numberOpened > 0 && openedCells === 0));
   }
-
-  private openingNeighbors(x: number, y: number){
-    const xTop = x-1
-    const xBottom = x+1
-    const yLeft = y-1
-    const yRight = y+1
-
-    this.saveOpenedNumber(x, y)
-    this.saveOpenedNumber(x, yLeft)
-    this.saveOpenedNumber(x, yRight)
-
-    this.saveOpenedNumber(xTop, yLeft)
-    this.saveOpenedNumber(xTop, y)
-    this.saveOpenedNumber(xTop, yRight)
-
-    this.saveOpenedNumber(xBottom, yLeft)
-    this.saveOpenedNumber(xBottom, y)
-    this.saveOpenedNumber(xBottom, yRight)
-
-  }
-
-  private saveOpenedNumber(x: number, y: number){
-    // if(this.inLimits(x, y)){
-    //   this.changeCellState(x, y, CellState.OPENED)
-    // }
-  }
-
 }
