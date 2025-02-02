@@ -109,19 +109,16 @@ export class Board{
     let xAxysTowardsTop = x-1
     let openCell = true
     let openedCells = 0;
-    let colNumbersOpened = 0
-
     do{
-      if(this.isThereMine(xAxys, yAxys) || this.isThereMine(xAxys, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxys) ){
-        if(openedCells == 0){
-          this.changeCellState(xAxys, yAxys, CellState.OPENED)
-        }
+      let colNumbersOpened = 0
+      if(openedCells === 0 && this.rows[xAxys][yAxys].neighborMines > 0 || (this.isThereMine(xAxys, yAxys) || this.isThereMine(xAxys, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxys)) ){
+        this.changeCellState(xAxys, yAxys, CellState.OPENED)
         openCell = false
       }else{
-        colNumbersOpened = 0;
         this.changeCellState(xAxys, yAxys, CellState.OPENED)
-        colNumbersOpened = this.rows[xAxys][yAxys]?.neighborMines > 0 ? 1 : 0
+        colNumbersOpened += this.rows[xAxys][yAxys]?.neighborMines > 0 ? 1 : 0
         openedCells++
+
         if(this.rows[xAxys][yAxys]?.neighborMines === 0){
           yAxys++
         }else{
@@ -129,11 +126,12 @@ export class Board{
         }
 
         this.changeCellState(xAxys, yAxysTowardsLeft, CellState.OPENED)
+        colNumbersOpened += this.rows[xAxys][yAxysTowardsLeft]?.neighborMines > 0 ? 1 : 0
         openedCells++
+
         if(this.rows[xAxys][yAxysTowardsLeft]?.neighborMines === 0){
           yAxysTowardsLeft--
         }else{
-          colNumbersOpened++
           if(colNumbersOpened > 1){
             yAxysTowardsLeft = y-1
             yAxys = y
@@ -142,12 +140,14 @@ export class Board{
               xAxysTowardsTop--
             }
 
-            if(this.coordinateInLimit(xAxys)){
+            if(xAxys < this.boardSize-1){
               xAxys++
             }
           }
         }
+
       }
+
     }while(openCell && this.allCoordinatesInLimits([xAxys, xAxysTowardsTop, yAxys, yAxysTowardsLeft]));
   }
 
