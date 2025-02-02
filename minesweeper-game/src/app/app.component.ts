@@ -32,7 +32,7 @@ export class AppComponent {
   }
 
   public startGame(){
-    const defaultMines = 13
+    const defaultMines = 1
     let minesNumber = this.minesNumber?.nativeElement.value
     this.gameParameters = new GameParameters(minesNumber ? minesNumber : defaultMines, this.setBoardSize())
     this.hideGameSettings = true

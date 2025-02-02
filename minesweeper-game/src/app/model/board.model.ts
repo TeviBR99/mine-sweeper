@@ -109,12 +109,26 @@ export class Board{
     let xAxysTowardsTop = x-1
     let openCell = true
     let openedCells = 0;
+
+    //Perhaps it would be better to open the cells like the neighboring mines:
+    /*
+    Example:
+
+    | 1 | 1 | 1 |
+    | 1 | a | - |
+    | - | - | - |
+
+    Afterwars checking the cell state
+
+    */
+
     do{
       let colNumbersOpened = 0
       if(openedCells === 0 && this.rows[xAxys][yAxys].neighborMines > 0 || (this.isThereMine(xAxys, yAxys) || this.isThereMine(xAxys, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxys)) ){
         this.changeCellState(xAxys, yAxys, CellState.OPENED)
         openCell = false
       }else{
+        //Open y coordinate
         this.changeCellState(xAxys, yAxys, CellState.OPENED)
         colNumbersOpened += this.rows[xAxys][yAxys]?.neighborMines > 0 ? 1 : 0
         openedCells++
@@ -125,6 +139,7 @@ export class Board{
           colNumbersOpened++
         }
 
+        //Open y-1 coordinate
         this.changeCellState(xAxys, yAxysTowardsLeft, CellState.OPENED)
         colNumbersOpened += this.rows[xAxys][yAxysTowardsLeft]?.neighborMines > 0 ? 1 : 0
         openedCells++
@@ -132,7 +147,8 @@ export class Board{
         if(this.rows[xAxys][yAxysTowardsLeft]?.neighborMines === 0){
           yAxysTowardsLeft--
         }else{
-          if(colNumbersOpened > 1){
+          //if there are 2 numbers opened
+          if(colNumbersOpened > 1 || (!this.coordinateInLimit(yAxys) && !this.coordinateInLimit(yAxysTowardsLeft)) ){
             yAxysTowardsLeft = y-1
             yAxys = y
 
