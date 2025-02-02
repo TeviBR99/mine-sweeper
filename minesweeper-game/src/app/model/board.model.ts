@@ -7,7 +7,6 @@ export class Board{
   public numberIsOpened: boolean = false
   private openedCellsWithBombsNearby: {xPoint: number, yPoint: number}[] = []
 
-  private inLimits = (x: number, y: number) => {return x >= 0 && x < this.boardSize && y >= 0 && y < this.boardSize}
 
 
   constructor(
@@ -15,6 +14,13 @@ export class Board{
     public boardSize: number
   ) {
     this.buildBoard()
+  }
+
+  private coordinatesInLimits = (x: number, y: number) => {return this.coordinateInLimit(x) && this.coordinateInLimit(y)}
+  private coordinateInLimit = (n: number) => {return n >= 0 && n < this.boardSize}
+
+  private allCoordinatesInLimits( coordinates: number[]){
+    return coordinates.filter( c => this.coordinateInLimit(c)).length > 0
   }
 
   private buildBoard(){
@@ -81,7 +87,7 @@ export class Board{
 
   private isThereMine(xAxys: number, yAxys: number){
     let mine = false;
-    if(xAxys >= 0 && xAxys < this.boardSize && yAxys >= 0 && yAxys < this.boardSize){
+    if(this.coordinatesInLimits(xAxys, yAxys)){
       mine = this.rows[xAxys][yAxys].mine;
     }
     return mine
@@ -89,7 +95,7 @@ export class Board{
 
   public changeCellState(rowIndex: number, cellIndex: number, state: CellState){
     let check = false;
-    if(this.rows && this.inLimits(rowIndex, cellIndex)){
+    if(this.rows && this.coordinatesInLimits(rowIndex, cellIndex)){
       this.rows[rowIndex][cellIndex].state = state
       check = true
     }
@@ -100,32 +106,50 @@ export class Board{
     let xAxys = x
     let yAxys = y
     let yAxysTowardsLeft = y-1
+    let xAxysTowardsTop = x-1
     let openCell = true
     let openedCells = 0;
-    let numberOpened = 0
+    let colNumbersOpened = 0
+
     do{
-      if(this.rows[xAxys][yAxys].mine || this.rows[xAxys][yAxysTowardsLeft].mine){
+      if(this.isThereMine(xAxys, yAxys) || this.isThereMine(xAxys, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxys) ){
         if(openedCells == 0){
           this.changeCellState(xAxys, yAxys, CellState.OPENED)
         }
         openCell = false
       }else{
-        if(openedCells == 0){
-          this.changeCellState(xAxys, yAxys, CellState.OPENED)
-          numberOpened += this.rows[xAxys][yAxys].neighborMines > 0 ? 1 : 0
-          if(numberOpened === 0){
-            this.changeCellState(xAxys, yAxysTowardsLeft, CellState.OPENED)
-          }
-          openCell = false
-        }else if(openedCells >= 0 && numberOpened == 0){
-          this.changeCellState(xAxys, yAxys, CellState.OPENED)
-          numberOpened += this.rows[xAxys][yAxys].neighborMines > 0 ? 1 : 0
-          openCell = numberOpened === 0
-        }
+        colNumbersOpened = 0;
+        this.changeCellState(xAxys, yAxys, CellState.OPENED)
+        colNumbersOpened = this.rows[xAxys][yAxys]?.neighborMines > 0 ? 1 : 0
         openedCells++
-        yAxys++
-        yAxysTowardsLeft--
+        if(this.rows[xAxys][yAxys]?.neighborMines === 0){
+          yAxys++
+        }else{
+          colNumbersOpened++
+        }
+
+        this.changeCellState(xAxys, yAxysTowardsLeft, CellState.OPENED)
+        openedCells++
+        if(this.rows[xAxys][yAxysTowardsLeft]?.neighborMines === 0){
+          yAxysTowardsLeft--
+        }else{
+          colNumbersOpened++
+          if(colNumbersOpened > 1){
+            yAxysTowardsLeft = y-1
+            yAxys = y
+
+            if(xAxysTowardsTop > 0){
+              xAxysTowardsTop--
+            }
+
+            if(this.coordinateInLimit(xAxys)){
+              xAxys++
+            }
+          }
+        }
       }
-    }while(openCell && yAxys >= 0 && yAxys < this.boardSize && (numberOpened > 0 && openedCells === 0));
+    }while(openCell && this.allCoordinatesInLimits([xAxys, xAxysTowardsTop, yAxys, yAxysTowardsLeft]));
   }
+
+
 }
