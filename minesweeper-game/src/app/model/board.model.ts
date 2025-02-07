@@ -92,24 +92,19 @@ export class Board{
   }
 
   public open(x: number, y: number){
-
-    //Perhaps it would be better to open the cells like the neighboring mines:
-    /*
-    Example:
-
-    | 1 | 1 | 1 |
-    | 1 | a | - |
-    | - | - | - |
-
-    Afterwards checking the cell state
-
-    */
-    for(let i=x-1; i<=x+1; i++){
-      for(let j=y-1; j<=y+1; j++){
-        this.changeCellState(i, j, CellState.OPENED)
-      }
+    this.changeCellState(x, y, CellState.OPENED)
+    if(this.minesAround(x,y) === 0 && !this.rows[x][y].mine){
+      this.openAdjacentCells(x,y)
     }
   }
 
-
+  public openAdjacentCells(x: number, y: number){
+      for(let i=x-1; i<=x+1; i++){
+        for(let j=y-1; j<=y+1; j++){
+          if(!this.isThereMine(x,y)){
+            this.changeCellState(i, j, CellState.OPENED)
+          }
+        }
+      }
+  }
 }
