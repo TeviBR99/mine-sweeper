@@ -92,19 +92,24 @@ export class Board{
   }
 
   public open(x: number, y: number){
+    console.log("(",x,",",y,")")
     this.changeCellState(x, y, CellState.OPENED)
-    if(this.minesAround(x,y) === 0 && !this.rows[x][y].mine){
+    if(this.minesAround(x,y) === 0 && !this.isThereMine(x,y)){
       this.openAdjacentCells(x,y)
     }
   }
 
   public openAdjacentCells(x: number, y: number){
-      for(let i=x-1; i<=x+1; i++){
-        for(let j=y-1; j<=y+1; j++){
-          if(!this.isThereMine(x,y)){
-            this.changeCellState(i, j, CellState.OPENED)
-          }
-        }
+    for(let rowsAround = x-1; rowsAround <= x+1; rowsAround++ ){
+      this.cellsAround(rowsAround, y)
+    }
+  }
+
+  public cellsAround(x: number, y: number){
+    for(let j=y-1; j<=y+1; j++){
+      if(!this.isThereMine(x,y)){
+        this.changeCellState(x, j, CellState.OPENED)
       }
+    }
   }
 }
