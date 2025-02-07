@@ -66,22 +66,11 @@ export class Board{
 
   private minesAround(x: number, y: number){
     let mines : number = 0;
-    const xTop = x-1
-    const xBottom = x+1
-    const yLeft = y-1
-    const yRight = y+1
-
-    mines += this.isThereMine(xTop, yLeft) ? 1 : 0;
-    mines += this.isThereMine(xTop, y) ? 1 : 0;
-    mines += this.isThereMine(xTop, yRight) ? 1 : 0;
-
-    mines += this.isThereMine(x, yLeft) ? 1 : 0;
-    mines += this.isThereMine(x, yRight) ? 1 : 0;
-
-    mines += this.isThereMine(xBottom, yLeft) ? 1 : 0;
-    mines += this.isThereMine(xBottom, y) ? 1 : 0;
-    mines += this.isThereMine(xBottom, yRight) ? 1 : 0;
-
+    for(let i=x-1; i<=x+1; i++){
+      for(let j=y-1; j<=y+1; j++){
+        mines += this.isThereMine(i, j) ? 1 : 0;
+      }
+    }
     return mines;
   }
 
@@ -103,12 +92,6 @@ export class Board{
   }
 
   public open(x: number, y: number){
-    let xAxys = x
-    let yAxys = y
-    let yAxysTowardsLeft = y-1
-    let xAxysTowardsTop = x-1
-    let openCell = true
-    let openedCells = 0;
 
     //Perhaps it would be better to open the cells like the neighboring mines:
     /*
@@ -118,53 +101,14 @@ export class Board{
     | 1 | a | - |
     | - | - | - |
 
-    Afterwars checking the cell state
+    Afterwards checking the cell state
 
     */
-
-    do{
-      let colNumbersOpened = 0
-      if(openedCells === 0 && this.rows[xAxys][yAxys].neighborMines > 0 || (this.isThereMine(xAxys, yAxys) || this.isThereMine(xAxys, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxysTowardsLeft) || this.isThereMine(xAxysTowardsTop, yAxys)) ){
-        this.changeCellState(xAxys, yAxys, CellState.OPENED)
-        openCell = false
-      }else{
-        //Open y coordinate
-        this.changeCellState(xAxys, yAxys, CellState.OPENED)
-        colNumbersOpened += this.rows[xAxys][yAxys]?.neighborMines > 0 ? 1 : 0
-        openedCells++
-
-        if(this.rows[xAxys][yAxys]?.neighborMines === 0){
-          yAxys++
-        }else{
-          colNumbersOpened++
-        }
-
-        //Open y-1 coordinate
-        this.changeCellState(xAxys, yAxysTowardsLeft, CellState.OPENED)
-        colNumbersOpened += this.rows[xAxys][yAxysTowardsLeft]?.neighborMines > 0 ? 1 : 0
-        openedCells++
-
-        if(this.rows[xAxys][yAxysTowardsLeft]?.neighborMines === 0){
-          yAxysTowardsLeft--
-        }else{
-          //if there are 2 numbers opened
-          if(colNumbersOpened > 1 || (!this.coordinateInLimit(yAxys) && !this.coordinateInLimit(yAxysTowardsLeft)) ){
-            yAxysTowardsLeft = y-1
-            yAxys = y
-
-            if(xAxysTowardsTop > 0){
-              xAxysTowardsTop--
-            }
-
-            if(xAxys < this.boardSize-1){
-              xAxys++
-            }
-          }
-        }
-
+    for(let i=x-1; i<=x+1; i++){
+      for(let j=y-1; j<=y+1; j++){
+        this.changeCellState(i, j, CellState.OPENED)
       }
-
-    }while(openCell && this.allCoordinatesInLimits([xAxys, xAxysTowardsTop, yAxys, yAxysTowardsLeft]));
+    }
   }
 
 
